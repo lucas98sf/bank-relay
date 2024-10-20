@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator pothos {
+  provider      = "prisma-pothos-types"
+  clientOutput  = "@prisma/client"
+  output        = "./pothos-types.ts"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  email    String   @unique
+  password String
+  accounts Account[]
+}
+
+model Account {
+  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  user      User          @relation(fields: [userId], references: [id])
+  userId    String        @db.ObjectId
+  balance   Int           @default(1000) // in cents
+  sentTransactions     Transaction[] @relation("SentTransactions")
+  receivedTransactions Transaction[] @relation("ReceivedTransactions")
+}
+
+model Transaction {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  fromAccountId   String    @db.ObjectId
+  toAccountId     String    @db.ObjectId
+  fromAccount     Account   @relation("SentTransactions", fields: [fromAccountId], references: [id])
+  toAccount       Account   @relation("ReceivedTransactions", fields: [toAccountId], references: [id])
+  amount      Int      // in cents
+  createdAt   DateTime @default(now())
+  reversed    Boolean  @default(false)
+}

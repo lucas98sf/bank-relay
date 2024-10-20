@@ -1,0 +1,157 @@
+type Account implements Node {
+  balance: Int
+  id: ID!
+  receivedTransactions: [Transaction!]
+  sentTransactions: [Transaction!]
+  user: User
+}
+
+type AccountNotFoundError implements Error {
+  code: String
+  error: String
+}
+
+type AuthenticationError implements Error {
+  code: String
+  error: String
+}
+
+type AuthorizationError implements Error {
+  code: String
+  error: String
+}
+
+type BaseError implements Error {
+  error: String
+}
+
+"""
+A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
+interface Error {
+  error: String
+}
+
+type InsufficientFundsError implements Error {
+  code: String
+  error: String
+}
+
+type InvalidCredentialsError implements Error {
+  code: String
+  error: String
+}
+
+type Mutation {
+  login(email: String!, password: String!): MutationLoginResult
+  register(email: String!, password: String!): MutationRegisterResult
+  sendTransaction(amount: Int!, fromAccountId: String!, toAccountId: String!): MutationSendTransactionResult
+}
+
+union MutationLoginResult = BaseError | InvalidCredentialsError | MutationLoginSuccess | ZodError
+
+type MutationLoginSuccess {
+  data: String!
+}
+
+union MutationRegisterResult = BaseError | MutationRegisterSuccess | UserExistsError | ZodError
+
+type MutationRegisterSuccess {
+  data: String!
+}
+
+union MutationSendTransactionResult = AccountNotFoundError | AuthenticationError | BaseError | InsufficientFundsError | MutationSendTransactionSuccess | ZodError
+
+type MutationSendTransactionSuccess {
+  data: Transaction!
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+type Query {
+  account(id: String!): QueryAccountResult
+  accounts(after: String, before: String, first: Int, last: Int): QueryAccountsResult
+  node(id: ID!): Node
+  nodes(ids: [ID!]!): [Node]!
+  transactions(accountId: String!, after: String, before: String, first: Int, last: Int): QueryTransactionsResult
+}
+
+union QueryAccountResult = AccountNotFoundError | AuthenticationError | BaseError | QueryAccountSuccess | ZodError
+
+type QueryAccountSuccess {
+  data: Account!
+}
+
+type QueryAccountsConnection {
+  edges: [QueryAccountsConnectionEdge]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type QueryAccountsConnectionEdge {
+  cursor: String!
+  node: Account
+}
+
+union QueryAccountsResult = AuthenticationError | BaseError | QueryAccountsSuccess
+
+type QueryAccountsSuccess {
+  data: QueryAccountsConnection!
+}
+
+type QueryTransactionsConnection {
+  edges: [QueryTransactionsConnectionEdge]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type QueryTransactionsConnectionEdge {
+  cursor: String!
+  node: Transaction
+}
+
+union QueryTransactionsResult = AccountNotFoundError | AuthenticationError | BaseError | QueryTransactionsSuccess | ZodError
+
+type QueryTransactionsSuccess {
+  data: QueryTransactionsConnection!
+}
+
+type Transaction implements Node {
+  amount: Int
+  createdAt: Date
+  fromAccount: Account
+  id: ID!
+  toAccount: Account
+}
+
+type User implements Node {
+  accounts: [Account!]
+  email: String
+  id: ID!
+}
+
+type UserExistsError implements Error {
+  code: String
+  error: String
+}
+
+type ZodError implements Error {
+  error: String
+  fieldErrors: [ZodFieldError!]
+}
+
+type ZodFieldError {
+  message: String
+  path: [String!]
+}
