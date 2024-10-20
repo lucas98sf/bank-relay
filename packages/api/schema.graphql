@@ -1,4 +1,5 @@
 type Account implements Node {
+  _id: String
   balance: Int
   id: ID!
   receivedTransactions: [Transaction!]
@@ -82,6 +83,7 @@ type PageInfo {
 type Query {
   account(id: String!): QueryAccountResult
   accounts(after: String, before: String, first: Int, last: Int): QueryAccountsResult
+  allAccounts(after: String, before: String, first: Int, last: Int): QueryAllAccountsResult
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
   transactions(accountId: String!, after: String, before: String, first: Int, last: Int): QueryTransactionsResult
@@ -110,6 +112,23 @@ type QueryAccountsSuccess {
   data: QueryAccountsConnection!
 }
 
+type QueryAllAccountsConnection {
+  edges: [QueryAllAccountsConnectionEdge]
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type QueryAllAccountsConnectionEdge {
+  cursor: String!
+  node: Account
+}
+
+union QueryAllAccountsResult = AuthenticationError | BaseError | QueryAllAccountsSuccess
+
+type QueryAllAccountsSuccess {
+  data: QueryAllAccountsConnection!
+}
+
 type QueryTransactionsConnection {
   edges: [QueryTransactionsConnectionEdge]
   pageInfo: PageInfo!
@@ -128,6 +147,7 @@ type QueryTransactionsSuccess {
 }
 
 type Transaction implements Node {
+  _id: String
   amount: Int
   createdAt: Date
   fromAccount: Account
@@ -136,6 +156,7 @@ type Transaction implements Node {
 }
 
 type User implements Node {
+  _id: String
   accounts: [Account!]
   email: String
   id: ID!

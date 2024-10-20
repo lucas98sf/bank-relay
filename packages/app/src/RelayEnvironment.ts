@@ -6,19 +6,21 @@ import {
   FetchFunction,
 } from "relay-runtime";
 
-const HTTP_ENDPOINT = "http://localhost:5000/graphql";
+const HTTP_ENDPOINT = "http://localhost:4000/graphql";
 
 const fetchFn: FetchFunction = async (request, variables) => {
+  const token = localStorage.getItem("token");
+
   const resp = await fetch(HTTP_ENDPOINT, {
     method: "POST",
     headers: {
       Accept:
         "application/graphql-response+json; charset=utf-8, application/json; charset=utf-8",
       "Content-Type": "application/json",
-      // <-- Additional headers like 'Authorization' would go here
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     body: JSON.stringify({
-      query: request.text, // <-- The GraphQL document composed by Relay
+      query: request.text,
       variables,
     }),
   });

@@ -51,6 +51,25 @@ builder.queryField("accounts", (t) =>
   })
 );
 
+builder.queryField("allAccounts", (t) =>
+  t.prismaConnection({
+    type: "Account",
+    cursor: "id",
+    errors: {
+      types: [AuthenticationError],
+    },
+    resolve: async (query, _root, _args, ctx) => {
+      if (!ctx.user) {
+        throw new AuthenticationError();
+      }
+
+      return prisma.account.findMany({
+        ...query,
+      });
+    },
+  })
+);
+
 builder.queryField("transactions", (t) =>
   t.prismaConnection({
     type: "Transaction",

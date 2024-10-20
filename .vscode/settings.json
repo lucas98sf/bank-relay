@@ -1,0 +1,4 @@
+{
+  "relay.pathToConfig": "packages/app/relay.config.json",
+  "relay.rootDirectory": "packages/app"
+}
