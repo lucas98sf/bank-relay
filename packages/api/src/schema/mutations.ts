@@ -126,7 +126,7 @@ builder.mutationField("register", (t) =>
 
 builder.mutationField("login", (t) =>
   t.field({
-    type: "String",
+    type: "Boolean",
     args: {
       email: t.arg.string({ required: true, validate: { email: true } }),
       password: t.arg.string({
@@ -136,7 +136,7 @@ builder.mutationField("login", (t) =>
     errors: {
       types: [ZodError, InvalidCredentialsError],
     },
-    resolve: async (_, { email, password }) => {
+    resolve: async (_, { email, password }, { cookies }) => {
       const user = await prisma.user.findUnique({
         where: { email },
       });
@@ -151,7 +151,15 @@ builder.mutationField("login", (t) =>
         throw new InvalidCredentialsError();
       }
 
-      return jwt.sign({ userId: user.id }, process.env.JWT_SECRET!);
+      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!);
+      cookies.set("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 24 * 60 * 60 * 1000, // 1 day
+      });
+
+      return true;
     },
   })
 );

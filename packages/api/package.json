@@ -5,8 +5,10 @@
   "type": "module",
   "description": "",
   "scripts": {
-    "dev": "tsx ./src/index.ts",
-    "prisma:generate": "prisma generate --schema=./src/prisma/schema.prisma",
+    "dev": "pnpm run --parallel \"/^start|db$/\"",
+    "start": "tsx ./src/index.ts",
+    "db": "docker-compose up -d",
+    "pre:start": "prisma generate --schema=./src/prisma/schema.prisma",
     "schema": "tsx ./scripts/generate-schema.ts",
     "relay": "relay-compiler",
     "test": "vitest --coverage"
@@ -27,6 +29,7 @@
     "babel-plugin-macros": "^3.1.0",
     "babel-plugin-relay": "18.1.0",
     "bcrypt": "^5.1.1",
+    "cookie": "^1.0.1",
     "dotenv": "^16.4.5",
     "graphql": "^16.9.0",
     "graphql-http": "^1.22.1",

@@ -3,6 +3,21 @@ import { prisma } from "../db";
 import { ZodError } from "zod";
 import { AccountNotFoundError, AuthenticationError } from "../errors";
 
+builder.queryField("me", (t) =>
+  t.prismaField({
+    type: "User",
+    errors: {
+      types: [AuthenticationError],
+    },
+    resolve: (_, __, ___, ctx) => {
+      if (!ctx.user) {
+        throw new AuthenticationError();
+      }
+      return prisma.user.findUnique({ where: { id: ctx.user?.id } });
+    },
+  })
+);
+
 builder.queryField("account", (t) =>
   t.prismaField({
     type: "Account",

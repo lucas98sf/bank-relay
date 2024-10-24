@@ -54,7 +54,7 @@ type Mutation {
 union MutationLoginResult = BaseError | InvalidCredentialsError | MutationLoginSuccess | ZodError
 
 type MutationLoginSuccess {
-  data: String!
+  data: Boolean!
 }
 
 union MutationRegisterResult = BaseError | MutationRegisterSuccess | UserExistsError | ZodError
@@ -84,6 +84,7 @@ type Query {
   account(id: String!): QueryAccountResult
   accounts(after: String, before: String, first: Int, last: Int): QueryAccountsResult
   allAccounts(after: String, before: String, first: Int, last: Int): QueryAllAccountsResult
+  me: QueryMeResult
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
   transactions(accountId: String!, after: String, before: String, first: Int, last: Int): QueryTransactionsResult
@@ -127,6 +128,12 @@ union QueryAllAccountsResult = AuthenticationError | BaseError | QueryAllAccount
 
 type QueryAllAccountsSuccess {
   data: QueryAllAccountsConnection!
+}
+
+union QueryMeResult = AuthenticationError | BaseError | QueryMeSuccess
+
+type QueryMeSuccess {
+  data: User!
 }
 
 type QueryTransactionsConnection {

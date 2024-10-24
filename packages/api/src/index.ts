@@ -24,6 +24,11 @@ app.use(async (ctx) => {
     ctx.append(key, value);
   });
 
+  if (response.headers.has("set-cookie")) {
+    const setCookieHeader = response.headers.get("set-cookie");
+    ctx.set("Set-Cookie", setCookieHeader!);
+  }
+
   ctx.body = response.body;
 });
 
