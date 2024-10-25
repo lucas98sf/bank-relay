@@ -1,6 +1,7 @@
 # Banking Application with Relay
 
 A full-stack banking application built with React, Relay, GraphQL, Prisma, and MongoDB.
+![image](https://github.com/user-attachments/assets/1194d242-08a3-4dbd-857c-f467ac14f9c6)
 
 ## Features
 
