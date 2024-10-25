@@ -118,6 +118,11 @@ describe("Authentication", () => {
       data: {
         email: input.email,
         password: await bcrypt.hash(input.password, 10),
+        accounts: {
+          create: {
+            balance: 1000,
+          },
+        },
       },
     });
 
@@ -125,6 +130,7 @@ describe("Authentication", () => {
 
     expect(response.errors).toBeUndefined();
     expect(response.data?.login.data).toBeDefined();
+    expect(response.data?.login.error).toBeUndefined();
   });
 
   it("should not login with incorrect password", async () => {

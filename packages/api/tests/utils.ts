@@ -7,19 +7,12 @@ import { ExecutionResult } from "graphql";
 export function createTestClient(token?: string) {
   const yoga = createYoga({
     schema,
-    context: createContext(
-      token
-        ? {
-            headers: {
-              headersInit: {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                //@ts-ignore
-                authorization: `Bearer ${token}`,
-              },
-            },
-          }
-        : ({} as any)
-    ),
+    context: createContext({
+      cookies: {
+        get: (_: string) => token,
+        set: () => {},
+      },
+    } as any),
   });
 
   return {
@@ -32,6 +25,7 @@ export function createTestClient(token?: string) {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           query,
           variables,

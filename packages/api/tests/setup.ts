@@ -8,16 +8,14 @@ beforeAll(async () => {
   mongoServer = await MongoMemoryReplSet.create({
     replSet: { count: 3 },
   });
-  const mongoUri = mongoServer.getUri() + "test";
+  const mongoUri = mongoServer.getUri() + "?authSource=admin";
   process.env.DATABASE_URL = mongoUri;
 });
 
 beforeEach(async () => {
-  await Promise.all([
-    prisma.transaction.deleteMany({ where: {} }),
-    prisma.account.deleteMany({ where: {} }),
-    prisma.user.deleteMany({ where: {} }),
-  ]);
+  await prisma.transaction.deleteMany({ where: {} });
+  await prisma.account.deleteMany({ where: {} });
+  await prisma.user.deleteMany({ where: {} });
 });
 
 afterAll(async () => {
