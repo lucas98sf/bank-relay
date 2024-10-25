@@ -47,6 +47,7 @@ type InvalidCredentialsError implements Error {
 
 type Mutation {
   login(email: String!, password: String!): MutationLoginResult
+  logout: Boolean
   register(email: String!, password: String!): MutationRegisterResult
   sendTransaction(amount: Int!, fromAccountId: String!, toAccountId: String!): MutationSendTransactionResult
 }
@@ -54,13 +55,13 @@ type Mutation {
 union MutationLoginResult = BaseError | InvalidCredentialsError | MutationLoginSuccess | ZodError
 
 type MutationLoginSuccess {
-  data: Boolean!
+  data: String!
 }
 
 union MutationRegisterResult = BaseError | MutationRegisterSuccess | UserExistsError | ZodError
 
 type MutationRegisterSuccess {
-  data: String!
+  data: Boolean!
 }
 
 union MutationSendTransactionResult = AccountNotFoundError | AuthenticationError | BaseError | InsufficientFundsError | MutationSendTransactionSuccess | ZodError

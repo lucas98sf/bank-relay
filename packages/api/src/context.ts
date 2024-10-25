@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import { prisma } from "./db";
 import { Context } from "koa";
-import cookie from "cookie";
 
 interface JwtPayload {
   userId: string;
@@ -12,8 +11,7 @@ export async function createContext(ctx: Context): Promise<{
   cookies: typeof ctx.cookies;
 }> {
   try {
-    const cookies = cookie.parse(ctx.headers.cookie || "");
-    const token = cookies.token; // Retrieve the token from cookies
+    const token = ctx.cookies.get("token");
 
     if (!token) {
       return { user: null, cookies: ctx.cookies }; // Include cookies in the context

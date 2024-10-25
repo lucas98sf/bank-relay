@@ -1,18 +1,32 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/use-auth";
+import { graphql, useMutation } from "react-relay";
+
+const logoutMutation = graphql`
+  mutation layoutLogoutMutation {
+    logout
+  }
+`;
 
 export function Layout() {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const { isAuthenticated, logout } = useAuth();
+  const [commit] = useMutation(logoutMutation);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
+    commit({
+      variables: {},
+      onCompleted: () => {
+        logout();
+        navigate("/login");
+      },
+    });
   };
 
   return (
     <div className="min-h-screen bg-background">
-      {token && (
+      {isAuthenticated && (
         <header className="border-b">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <nav className="flex gap-4">

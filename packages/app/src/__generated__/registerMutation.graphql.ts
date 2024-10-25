@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<32c9a7f1a5c0a4500fe27ea5dec73d79>>
+ * @generated SignedSource<<96c2cbe1cffa176c3b1c2d88ffa6b3fa>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,7 +16,7 @@ export type registerMutation$variables = {
 export type registerMutation$data = {
   readonly register: {
     readonly __typename?: string;
-    readonly data?: string;
+    readonly data?: boolean;
     readonly error?: string | null | undefined;
   } | null | undefined;
 };
@@ -77,7 +77,14 @@ v4 = {
   "kind": "ScalarField",
   "name": "error",
   "storageKey": null
-};
+},
+v5 = [
+  (v3/*: any*/),
+  (v4/*: any*/)
+],
+v6 = [
+  (v4/*: any*/)
+];
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -96,10 +103,13 @@ return {
           (v2/*: any*/),
           {
             "kind": "InlineFragment",
-            "selections": [
-              (v3/*: any*/),
-              (v4/*: any*/)
-            ],
+            "selections": (v5/*: any*/),
+            "type": "ZodError",
+            "abstractKey": null
+          },
+          {
+            "kind": "InlineFragment",
+            "selections": (v5/*: any*/),
             "type": "Error",
             "abstractKey": "__isError"
           }
@@ -128,9 +138,13 @@ return {
           (v2/*: any*/),
           {
             "kind": "InlineFragment",
-            "selections": [
-              (v4/*: any*/)
-            ],
+            "selections": (v6/*: any*/),
+            "type": "ZodError",
+            "abstractKey": null
+          },
+          {
+            "kind": "InlineFragment",
+            "selections": (v6/*: any*/),
             "type": "Error",
             "abstractKey": "__isError"
           }
@@ -140,16 +154,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "46ac2e5510c6ccf71e054a2de1b46175",
+    "cacheID": "b8d7d79e06919ce1d98eeb9ea04aab94",
     "id": null,
     "metadata": {},
     "name": "registerMutation",
     "operationKind": "mutation",
-    "text": "mutation registerMutation(\n  $email: String!\n  $password: String!\n) {\n  register(email: $email, password: $password) {\n    __typename\n    ... on MutationRegisterSuccess {\n      data\n    }\n    ... on Error {\n      __isError: __typename\n      __typename\n      error\n    }\n  }\n}\n"
+    "text": "mutation registerMutation(\n  $email: String!\n  $password: String!\n) {\n  register(email: $email, password: $password) {\n    __typename\n    ... on MutationRegisterSuccess {\n      data\n    }\n    ... on ZodError {\n      __typename\n      error\n    }\n    ... on Error {\n      __isError: __typename\n      __typename\n      error\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "37faca5f0968f7dd5c92bd7c2d8eed5a";
+(node as any).hash = "b28817486dc89754bc2d5482b513d418";
 
 export default node;

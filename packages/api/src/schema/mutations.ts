@@ -85,7 +85,7 @@ builder.mutationField("sendTransaction", (t) =>
 
 builder.mutationField("register", (t) =>
   t.field({
-    type: "String",
+    type: "Boolean",
     args: {
       email: t.arg.string({ required: true, validate: { email: true } }),
       password: t.arg.string({
@@ -96,7 +96,7 @@ builder.mutationField("register", (t) =>
     errors: {
       types: [ZodError, UserExistsError],
     },
-    resolve: async (_, { email, password }) => {
+    resolve: async (_, { email, password }, { cookies }) => {
       const existingUser = await prisma.user.findUnique({
         where: { email },
       });
@@ -119,14 +119,22 @@ builder.mutationField("register", (t) =>
         },
       });
 
-      return jwt.sign({ userId: user.id }, process.env.JWT_SECRET!);
+      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!);
+      cookies.set("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 24 * 60 * 60 * 1000, // 1 day
+      });
+
+      return true;
     },
   })
 );
 
 builder.mutationField("login", (t) =>
   t.field({
-    type: "Boolean",
+    type: "String",
     args: {
       email: t.arg.string({ required: true, validate: { email: true } }),
       password: t.arg.string({
@@ -139,6 +147,16 @@ builder.mutationField("login", (t) =>
     resolve: async (_, { email, password }, { cookies }) => {
       const user = await prisma.user.findUnique({
         where: { email },
+        select: {
+          id: true,
+          password: true,
+          accounts: {
+            take: 1,
+            select: {
+              id: true,
+            },
+          },
+        },
       });
 
       if (!user) {
@@ -159,6 +177,16 @@ builder.mutationField("login", (t) =>
         maxAge: 24 * 60 * 60 * 1000, // 1 day
       });
 
+      return user.accounts[0].id;
+    },
+  })
+);
+
+builder.mutationField("logout", (t) =>
+  t.field({
+    type: "Boolean",
+    resolve: async (_, __, { cookies }) => {
+      cookies.set("token", "", { maxAge: 0 });
       return true;
     },
   })

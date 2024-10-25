@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { graphql, useMutation } from "react-relay";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/use-auth";
 import { loginMutation } from "@/__generated__/loginMutation.graphql";
 
 const mutation = graphql`
@@ -24,8 +25,13 @@ export function Login() {
   const [commit] = useMutation<loginMutation>(mutation);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { setAuth } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const from = (location.state as any)?.from?.pathname || "/dashboard";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,8 +43,8 @@ export function Login() {
       },
       onCompleted: (response) => {
         if (response.login?.data) {
-          localStorage.setItem("token", response.login.data);
-          navigate("/dashboard");
+          setAuth(true, response.login.data);
+          navigate(from, { replace: true });
         } else {
           toast({
             variant: "destructive",

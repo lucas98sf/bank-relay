@@ -5,6 +5,7 @@ import { Register } from "./pages/register";
 import { Dashboard } from "./pages/dashboard";
 import { Transactions } from "./pages/transactions";
 import { SendMoney } from "./pages/send-money";
+import { AuthGuard } from "./components/AuthGuard";
 import { Accounts } from "@/pages/accounts";
 
 const router = createBrowserRouter([
@@ -22,7 +23,11 @@ const router = createBrowserRouter([
       },
       {
         path: "accounts",
-        element: <Accounts />,
+        element: (
+          <AuthGuard>
+            <Accounts />
+          </AuthGuard>
+        ),
       },
       {
         path: "register",
@@ -30,15 +35,27 @@ const router = createBrowserRouter([
       },
       {
         path: "dashboard",
-        element: <Dashboard />,
+        element: (
+          <AuthGuard>
+            <Dashboard />
+          </AuthGuard>
+        ),
       },
       {
         path: "transactions",
-        element: <Transactions />,
+        element: (
+          <AuthGuard>
+            <Transactions />
+          </AuthGuard>
+        ),
       },
       {
         path: "send",
-        element: <SendMoney />,
+        element: (
+          <AuthGuard>
+            <SendMoney />
+          </AuthGuard>
+        ),
       },
     ],
   },
