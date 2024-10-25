@@ -1,16 +1,5 @@
-import { MongoMemoryReplSet } from "mongodb-memory-server";
-import { beforeAll, afterAll, beforeEach } from "vitest";
+import { afterAll, beforeEach } from "vitest";
 import { prisma } from "../src/db";
-
-let mongoServer: MongoMemoryReplSet;
-
-beforeAll(async () => {
-  mongoServer = await MongoMemoryReplSet.create({
-    replSet: { count: 3 },
-  });
-  const mongoUri = mongoServer.getUri() + "?authSource=admin";
-  process.env.DATABASE_URL = mongoUri;
-});
 
 beforeEach(async () => {
   await prisma.transaction.deleteMany({ where: {} });
@@ -20,7 +9,6 @@ beforeEach(async () => {
 
 afterAll(async () => {
   await prisma.$disconnect();
-  await mongoServer.stop();
 });
 
 // Test utilities
