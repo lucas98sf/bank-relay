@@ -27,6 +27,6 @@ export const Transaction = builder.prismaNode("Transaction", {
     amount: t.exposeInt("amount"),
     fromAccount: t.relation("fromAccount"),
     toAccount: t.relation("toAccount"),
-    createdAt: t.expose("createdAt", { type: "Date" }),
+    createdAt: t.expose("createdAt", { type: "DateTime" }),
   }),
 });

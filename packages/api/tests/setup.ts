@@ -11,7 +11,6 @@ afterAll(async () => {
   await prisma.$disconnect();
 });
 
-// Test utilities
 export async function createTestUser(
   email = "test@example.com",
   password = "password123"

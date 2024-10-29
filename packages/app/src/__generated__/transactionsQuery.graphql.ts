@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ac627706a24e99bb72abcf3c3cc93429>>
+ * @generated SignedSource<<d3743d8bf96753cbe853f67f77500253>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,6 +9,7 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from 'relay-runtime';
+import { FragmentRefs } from "relay-runtime";
 export type transactionsQuery$variables = {
   accountId: string;
   after?: string | null | undefined;
@@ -21,21 +22,7 @@ export type transactionsQuery$data = {
       readonly edges: ReadonlyArray<{
         readonly cursor: string;
         readonly node: {
-          readonly amount: number | null | undefined;
-          readonly createdAt: any | null | undefined;
-          readonly fromAccount: {
-            readonly id: string;
-            readonly user: {
-              readonly email: string | null | undefined;
-            } | null | undefined;
-          } | null | undefined;
-          readonly id: string;
-          readonly toAccount: {
-            readonly id: string;
-            readonly user: {
-              readonly email: string | null | undefined;
-            } | null | undefined;
-          } | null | undefined;
+          readonly " $fragmentSpreads": FragmentRefs<"TransactionItem_transaction">;
         } | null | undefined;
       } | null | undefined> | null | undefined;
       readonly pageInfo: {
@@ -94,49 +81,6 @@ v4 = {
 v5 = {
   "alias": null,
   "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v6 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "amount",
-  "storageKey": null
-},
-v7 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "createdAt",
-  "storageKey": null
-},
-v8 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "email",
-  "storageKey": null
-},
-v9 = [
-  (v5/*: any*/),
-  {
-    "alias": null,
-    "args": null,
-    "concreteType": "User",
-    "kind": "LinkedField",
-    "name": "user",
-    "plural": false,
-    "selections": [
-      (v8/*: any*/)
-    ],
-    "storageKey": null
-  }
-],
-v10 = {
-  "alias": null,
-  "args": null,
   "concreteType": "PageInfo",
   "kind": "LinkedField",
   "name": "pageInfo",
@@ -159,22 +103,29 @@ v10 = {
   ],
   "storageKey": null
 },
-v11 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v12 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "error",
   "storageKey": null
 },
-v13 = [
-  (v5/*: any*/),
+v8 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v9 = [
+  (v8/*: any*/),
   {
     "alias": null,
     "args": null,
@@ -183,8 +134,14 @@ v13 = [
     "name": "user",
     "plural": false,
     "selections": [
-      (v8/*: any*/),
-      (v5/*: any*/)
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "email",
+        "storageKey": null
+      },
+      (v8/*: any*/)
     ],
     "storageKey": null
   }
@@ -236,28 +193,10 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v5/*: any*/),
-                          (v6/*: any*/),
-                          (v7/*: any*/),
                           {
-                            "alias": null,
                             "args": null,
-                            "concreteType": "Account",
-                            "kind": "LinkedField",
-                            "name": "fromAccount",
-                            "plural": false,
-                            "selections": (v9/*: any*/),
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Account",
-                            "kind": "LinkedField",
-                            "name": "toAccount",
-                            "plural": false,
-                            "selections": (v9/*: any*/),
-                            "storageKey": null
+                            "kind": "FragmentSpread",
+                            "name": "TransactionItem_transaction"
                           }
                         ],
                         "storageKey": null
@@ -265,7 +204,7 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v10/*: any*/)
+                  (v5/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -276,8 +215,8 @@ return {
           {
             "kind": "InlineFragment",
             "selections": [
-              (v11/*: any*/),
-              (v12/*: any*/)
+              (v6/*: any*/),
+              (v7/*: any*/)
             ],
             "type": "Error",
             "abstractKey": "__isError"
@@ -307,7 +246,7 @@ return {
         "name": "transactions",
         "plural": false,
         "selections": [
-          (v11/*: any*/),
+          (v6/*: any*/),
           {
             "kind": "InlineFragment",
             "selections": [
@@ -336,9 +275,21 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v5/*: any*/),
-                          (v6/*: any*/),
-                          (v7/*: any*/),
+                          (v8/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "amount",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "createdAt",
+                            "storageKey": null
+                          },
                           {
                             "alias": null,
                             "args": null,
@@ -346,7 +297,7 @@ return {
                             "kind": "LinkedField",
                             "name": "fromAccount",
                             "plural": false,
-                            "selections": (v13/*: any*/),
+                            "selections": (v9/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -356,7 +307,7 @@ return {
                             "kind": "LinkedField",
                             "name": "toAccount",
                             "plural": false,
-                            "selections": (v13/*: any*/),
+                            "selections": (v9/*: any*/),
                             "storageKey": null
                           }
                         ],
@@ -365,7 +316,7 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v10/*: any*/)
+                  (v5/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -376,7 +327,7 @@ return {
           {
             "kind": "InlineFragment",
             "selections": [
-              (v12/*: any*/)
+              (v7/*: any*/)
             ],
             "type": "Error",
             "abstractKey": "__isError"
@@ -387,16 +338,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "387f491eba8375e6073cc6f9465c8ee1",
+    "cacheID": "e2e6e957e9f9e0eb22c094b2754c1ee8",
     "id": null,
     "metadata": {},
     "name": "transactionsQuery",
     "operationKind": "query",
-    "text": "query transactionsQuery(\n  $accountId: String!\n  $first: Int!\n  $after: String\n) {\n  transactions(accountId: $accountId, first: $first, after: $after) {\n    __typename\n    ... on QueryTransactionsSuccess {\n      data {\n        edges {\n          cursor\n          node {\n            id\n            amount\n            createdAt\n            fromAccount {\n              id\n              user {\n                email\n                id\n              }\n            }\n            toAccount {\n              id\n              user {\n                email\n                id\n              }\n            }\n          }\n        }\n        pageInfo {\n          hasNextPage\n          endCursor\n        }\n      }\n    }\n    ... on Error {\n      __isError: __typename\n      __typename\n      error\n    }\n  }\n}\n"
+    "text": "query transactionsQuery(\n  $accountId: String!\n  $first: Int!\n  $after: String\n) {\n  transactions(accountId: $accountId, first: $first, after: $after) {\n    __typename\n    ... on QueryTransactionsSuccess {\n      data {\n        edges {\n          cursor\n          node {\n            ...TransactionItem_transaction\n            id\n          }\n        }\n        pageInfo {\n          hasNextPage\n          endCursor\n        }\n      }\n    }\n    ... on Error {\n      __isError: __typename\n      __typename\n      error\n    }\n  }\n}\n\nfragment TransactionItem_transaction on Transaction {\n  id\n  amount\n  createdAt\n  fromAccount {\n    id\n    user {\n      email\n      id\n    }\n  }\n  toAccount {\n    id\n    user {\n      email\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "a61e322c2615be36d3e0349d218f5c5b";
+(node as any).hash = "0c8ad5c4f373fc334f7d499490a3be39";
 
 export default node;

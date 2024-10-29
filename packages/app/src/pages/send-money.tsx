@@ -20,8 +20,8 @@ const sendTransactionMutation = graphql`
     ) {
       ... on MutationSendTransactionSuccess {
         data {
-          id
           amount
+          ...TransactionItem_transaction
         }
       }
       ... on Error {
@@ -51,11 +51,11 @@ export function SendMoney() {
         toAccountId: toAccount,
       },
       onCompleted: (response) => {
-        if (response.sendTransaction?.data?.amount) {
+        if (response.sendTransaction?.data) {
           toast({
             title: "Success",
             description: `Successfully sent $${(
-              response.sendTransaction.data.amount / 100
+              (response.sendTransaction?.data?.amount ?? 0) / 100
             ).toFixed(2)}`,
           });
           navigate("/transactions");
@@ -66,6 +66,36 @@ export function SendMoney() {
             description: response.sendTransaction?.error,
           });
         }
+      },
+      updater: (store) => {
+        // Get the new transaction
+        const newTransaction = store
+          .getRootField("sendTransaction")
+          ?.getLinkedRecord("data");
+        if (!newTransaction) return;
+
+        // Get the connection
+        const accountId = localStorage.getItem("accountId");
+        const root = store.getRoot();
+        const transactions = root.getLinkedRecord("transactions", {
+          accountId,
+          first: 10,
+          after: null,
+        });
+        if (!transactions) return;
+
+        const connection = transactions.getLinkedRecord("data");
+        if (!connection) return;
+
+        // Add the new transaction to the connection
+        const edges = connection.getLinkedRecords("edges") ?? [];
+        const newEdge = store.create(
+          "client:newEdge:" + newTransaction.getDataID(),
+          "TransactionEdge"
+        );
+        newEdge.setLinkedRecord(newTransaction, "node");
+
+        connection.setLinkedRecords([newEdge, ...edges], "edges");
       },
     });
   };

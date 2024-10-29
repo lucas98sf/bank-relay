@@ -4,7 +4,7 @@ import RelayPlugin from "@pothos/plugin-relay";
 import ValidationPlugin from "@pothos/plugin-validation";
 import ErrorsPlugin from "@pothos/plugin-errors";
 import type PrismaTypes from "../prisma/pothos-types";
-import { DateResolver } from "graphql-scalars";
+import { DateTimeResolver } from "graphql-scalars";
 import { prisma } from "../db";
 import { createContext } from "../context";
 
@@ -12,7 +12,7 @@ export const builder = new SchemaBuilder<{
   PrismaTypes: PrismaTypes;
   Context: Awaited<ReturnType<typeof createContext>>;
   Scalars: {
-    Date: { Input: Date; Output: Date };
+    DateTime: { Input: Date; Output: Date };
   };
 }>({
   plugins: [ErrorsPlugin, ValidationPlugin, PrismaPlugin, RelayPlugin],
@@ -28,7 +28,7 @@ export const builder = new SchemaBuilder<{
   },
 });
 
-builder.addScalarType("Date", DateResolver);
+builder.addScalarType("DateTime", DateTimeResolver);
 
 builder.globalConnectionField("totalCount", (t) =>
   t.int({

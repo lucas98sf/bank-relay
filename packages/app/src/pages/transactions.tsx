@@ -1,9 +1,9 @@
 import { FC, Suspense } from "react";
 import { graphql, useLazyLoadQuery } from "react-relay";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { transactionsQuery } from "@/__generated__/transactionsQuery.graphql";
 import { useState } from "react";
+import { TransactionItem } from "@/components/TransactionItem";
 
 const query = graphql`
   query transactionsQuery($accountId: String!, $first: Int!, $after: String) {
@@ -13,21 +13,7 @@ const query = graphql`
           edges {
             cursor
             node {
-              id
-              amount
-              createdAt
-              fromAccount {
-                id
-                user {
-                  email
-                }
-              }
-              toAccount {
-                id
-                user {
-                  email
-                }
-              }
+              ...TransactionItem_transaction
             }
           }
           pageInfo {
@@ -70,34 +56,7 @@ const TransactionsList: FC = () => {
       <h1 className="text-3xl font-bold">Transactions</h1>
       <div className="space-y-4">
         {edges?.map(({ node }) => (
-          <Card key={node.id}>
-            <CardContent className="pt-6">
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-sm text-muted-foreground">
-                    {new Date(node.createdAt).toLocaleString()}
-                  </p>
-                  <p>
-                    From: {node.fromAccount.user.email}
-                    <br />
-                    To: {node.toAccount.user.email}
-                  </p>
-                </div>
-                <p
-                  className={`text-xl font-bold ${
-                    node.fromAccount.id === localStorage.getItem("accountId")
-                      ? "text-red-500"
-                      : "text-green-500"
-                  }`}
-                >
-                  {node.fromAccount.id === localStorage.getItem("accountId")
-                    ? "-"
-                    : "+"}
-                  ${(node.amount / 100).toFixed(2)}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <TransactionItem key={node.id} transaction={node} />
         ))}
         {pageInfo.hasNextPage && (
           <Button onClick={loadMore} className="w-full" variant="outline">
