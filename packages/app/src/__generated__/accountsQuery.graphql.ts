@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0e61eb36b7bd763d4919539256e35376>>
+ * @generated SignedSource<<67cd03feadb20fe6a44672944f37a695>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -22,6 +22,7 @@ export type accountsQuery$data = {
         readonly node: {
           readonly _id: string | null | undefined;
           readonly balance: number | null | undefined;
+          readonly id: string;
           readonly user: {
             readonly email: string | null | undefined;
           } | null | undefined;
@@ -81,17 +82,24 @@ v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "balance",
+  "name": "id",
   "storageKey": null
 },
 v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "email",
+  "name": "balance",
   "storageKey": null
 },
 v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "email",
+  "storageKey": null
+},
+v8 = {
   "alias": null,
   "args": null,
   "concreteType": "PageInfo",
@@ -116,25 +124,18 @@ v7 = {
   ],
   "storageKey": null
 },
-v8 = {
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v9 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "error",
-  "storageKey": null
-},
 v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "error",
   "storageKey": null
 };
 return {
@@ -185,6 +186,7 @@ return {
                         "selections": [
                           (v4/*: any*/),
                           (v5/*: any*/),
+                          (v6/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -193,7 +195,7 @@ return {
                             "name": "user",
                             "plural": false,
                             "selections": [
-                              (v6/*: any*/)
+                              (v7/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -203,7 +205,7 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v7/*: any*/)
+                  (v8/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -214,8 +216,8 @@ return {
           {
             "kind": "InlineFragment",
             "selections": [
-              (v8/*: any*/),
-              (v9/*: any*/)
+              (v9/*: any*/),
+              (v10/*: any*/)
             ],
             "type": "Error",
             "abstractKey": "__isError"
@@ -244,7 +246,7 @@ return {
         "name": "allAccounts",
         "plural": false,
         "selections": [
-          (v8/*: any*/),
+          (v9/*: any*/),
           {
             "kind": "InlineFragment",
             "selections": [
@@ -275,6 +277,7 @@ return {
                         "selections": [
                           (v4/*: any*/),
                           (v5/*: any*/),
+                          (v6/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -283,19 +286,18 @@ return {
                             "name": "user",
                             "plural": false,
                             "selections": [
-                              (v6/*: any*/),
-                              (v10/*: any*/)
+                              (v7/*: any*/),
+                              (v5/*: any*/)
                             ],
                             "storageKey": null
-                          },
-                          (v10/*: any*/)
+                          }
                         ],
                         "storageKey": null
                       }
                     ],
                     "storageKey": null
                   },
-                  (v7/*: any*/)
+                  (v8/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -306,7 +308,7 @@ return {
           {
             "kind": "InlineFragment",
             "selections": [
-              (v9/*: any*/)
+              (v10/*: any*/)
             ],
             "type": "Error",
             "abstractKey": "__isError"
@@ -317,16 +319,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "70451fbdb297a0a53c0e12b4be915a53",
+    "cacheID": "10fc1779fad58c81436feba539d32bbd",
     "id": null,
     "metadata": {},
     "name": "accountsQuery",
     "operationKind": "query",
-    "text": "query accountsQuery(\n  $first: Int!\n  $after: String\n) {\n  allAccounts(first: $first, after: $after) {\n    __typename\n    ... on QueryAllAccountsSuccess {\n      data {\n        edges {\n          cursor\n          node {\n            _id\n            balance\n            user {\n              email\n              id\n            }\n            id\n          }\n        }\n        pageInfo {\n          hasNextPage\n          endCursor\n        }\n      }\n    }\n    ... on Error {\n      __isError: __typename\n      __typename\n      error\n    }\n  }\n}\n"
+    "text": "query accountsQuery(\n  $first: Int!\n  $after: String\n) {\n  allAccounts(first: $first, after: $after) {\n    __typename\n    ... on QueryAllAccountsSuccess {\n      data {\n        edges {\n          cursor\n          node {\n            _id\n            id\n            balance\n            user {\n              email\n              id\n            }\n          }\n        }\n        pageInfo {\n          hasNextPage\n          endCursor\n        }\n      }\n    }\n    ... on Error {\n      __isError: __typename\n      __typename\n      error\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "e9b7399f22d83d8242091137e541ecb3";
+(node as any).hash = "11240e3d1c5d197f28a32139058808d4";
 
 export default node;

@@ -13,6 +13,7 @@ const query = graphql`
           edges {
             cursor
             node {
+              id
               ...TransactionItem_transaction
             }
           }
@@ -55,8 +56,8 @@ const TransactionsList: FC = () => {
     <div className="space-y-8">
       <h1 className="text-3xl font-bold">Transactions</h1>
       <div className="space-y-4">
-        {edges?.map(({ node }) => (
-          <TransactionItem key={node.id} transaction={node} />
+        {edges?.map((edge) => (
+          <TransactionItem key={edge?.node?.id} transaction={edge?.node} />
         ))}
         {pageInfo.hasNextPage && (
           <Button onClick={loadMore} className="w-full" variant="outline">

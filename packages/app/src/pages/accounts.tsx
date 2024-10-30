@@ -14,6 +14,7 @@ const query = graphql`
             cursor
             node {
               _id
+              id
               balance
               user {
                 email
@@ -58,11 +59,11 @@ const AccountsList = () => {
     <div className="space-y-8">
       <h1 className="text-3xl font-bold">Accounts</h1>
       <div className="space-y-4">
-        {edges?.map(({ node }) => (
+        {edges?.map((edge) => (
           <Card
-            key={node.id}
+            key={edge?.node?.id}
             className={
-              localStorage.getItem("accountId") === node._id
+              localStorage.getItem("accountId") === edge?.node?._id
                 ? "bg-slate-300"
                 : ""
             }
@@ -71,14 +72,14 @@ const AccountsList = () => {
               <div className="flex justify-between items-center">
                 <div>
                   <div className="text-2xl text-gray-700">
-                    Account ID: {node._id}
+                    Account ID: {edge?.node?._id}
                   </div>
                   <div className="text-2xl text-gray-500">
-                    Email: {node.user.email}
+                    Email: {edge?.node?.user?.email}
                   </div>
                 </div>
                 <p className="text-4xl font-bold">
-                  ${((node?.balance ?? 0) / 100).toFixed(2)}
+                  ${((edge?.node?.balance ?? 0) / 100).toFixed(2)}
                 </p>
               </div>
             </CardContent>
